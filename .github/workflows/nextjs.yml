@@ -24,17 +24,6 @@ jobs:
       - name: Install pnpm globally
         run: npm install -g pnpm
 
-      - name: Add pnpm to PATH
-        run: echo "::add-path::$(npm bin -g)"
-
-      - name: Restore .next cache
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml', '**/*.[jt]s', '**/*.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-
-
       - name: Install dependencies
         run: pnpm install
 
