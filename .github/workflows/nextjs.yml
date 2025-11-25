@@ -45,11 +45,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: ${{ steps.detect-pkg.outputs.manager }}
+          cache: "pnpm"
+      
+      - name: Install pnpm
+        run: |
+          npm install -g pnpm
+          echo "::add-path::$(npm bin -g)"
 
-      - name: Install pnpm if needed
-        if: ${{ steps.detect-pkg.outputs.manager == 'pnpm' }}
-        run: npm install -g pnpm
 
       - name: Restore .next cache
         uses: actions/cache@v4
