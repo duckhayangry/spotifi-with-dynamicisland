@@ -21,23 +21,52 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Detect package manager
+        id: detect-pkg
+        run: |
+          if [ -f "${GITHUB_WORKSPACE}/pnpm-lock.yaml" ]; then
+            echo "manager=pnpm" >> $GITHUB_OUTPUT
+            echo "installCommand=install" >> $GITHUB_OUTPUT
+            echo "runCommand=pnpm exec" >> $GITHUB_OUTPUT
+          elif [ -f "${GITHUB_WORKSPACE}/yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_OUTPUT
+            echo "installCommand=install" >> $GITHUB_OUTPUT
+            echo "runCommand=yarn" >> $GITHUB_OUTPUT
+          elif [ -f "${GITHUB_WORKSPACE}/package-lock.json" ]; then
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "installCommand=ci" >> $GITHUB_OUTPUT
+            echo "runCommand=npx --no-install" >> $GITHUB_OUTPUT
+          else
+            echo "Unable to detect package manager"
+            exit 1
+          fi
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "pnpm"
+          cache: ${{ steps.detect-pkg.outputs.manager }}
 
-      - name: Install pnpm
+      - name: Install pnpm if needed
+        if: ${{ steps.detect-pkg.outputs.manager == 'pnpm' }}
         run: npm install -g pnpm
 
+      - name: Restore .next cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml', '**/yarn.lock', '**/package-lock.json', '**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-
+
       - name: Install dependencies
-        run: pnpm install
+        run: ${{ steps.detect-pkg.outputs.manager }} ${{ steps.detect-pkg.outputs.installCommand }}
 
       - name: Build with Next.js
-        run: pnpm exec next build
+        run: ${{ steps.detect-pkg.outputs.runCommand }} next build
 
       - name: Export static site
-        run: pnpm exec next export
+        run: ${{ steps.detect-pkg.outputs.runCommand }} next export
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
