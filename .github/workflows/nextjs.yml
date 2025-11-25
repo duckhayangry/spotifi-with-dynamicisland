@@ -10,65 +10,39 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Detect package manager
-        id: detect-pkg
-        run: |
-          if [ -f "${GITHUB_WORKSPACE}/pnpm-lock.yaml" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT
-            echo "installCommand=install" >> $GITHUB_OUTPUT
-            echo "runCommand=pnpm exec" >> $GITHUB_OUTPUT
-          elif [ -f "${GITHUB_WORKSPACE}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "installCommand=install" >> $GITHUB_OUTPUT
-            echo "runCommand=yarn" >> $GITHUB_OUTPUT
-          elif [ -f "${GITHUB_WORKSPACE}/package-lock.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "installCommand=ci" >> $GITHUB_OUTPUT
-            echo "runCommand=npx --no-install" >> $GITHUB_OUTPUT
-          else
-            echo "Unable to detect package manager"
-            exit 1
-          fi
+      - uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "pnpm"
-      
-      - name: Install pnpm
-        run: |
-          npm install -g pnpm
-          echo "::add-path::$(npm bin -g)"
 
+      - name: Install pnpm globally
+        run: npm install -g pnpm
+
+      - name: Add pnpm to PATH
+        run: echo "::add-path::$(npm bin -g)"
 
       - name: Restore .next cache
         uses: actions/cache@v4
         with:
           path: .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml', '**/yarn.lock', '**/package-lock.json', '**/*.[jt]s', '**/*.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml', '**/*.[jt]s', '**/*.[jt]sx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-
 
       - name: Install dependencies
-        run: ${{ steps.detect-pkg.outputs.manager }} ${{ steps.detect-pkg.outputs.installCommand }}
+        run: pnpm install
 
-      - name: Build with Next.js
-        run: ${{ steps.detect-pkg.outputs.runCommand }} next build
+      - name: Build Next.js
+        run: pnpm exec next build
 
       - name: Export static site
-        run: ${{ steps.detect-pkg.outputs.runCommand }} next export
+        run: pnpm exec next export
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -82,5 +56,4 @@ jobs:
       name: github-pages
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
