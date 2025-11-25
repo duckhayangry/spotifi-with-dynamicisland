@@ -7,8 +7,9 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    unoptimized: true, // cần nếu dùng next/image
   },
+  output: 'export', // <--- thêm dòng này để thay thế next export
 }
 
 export default nextConfig
