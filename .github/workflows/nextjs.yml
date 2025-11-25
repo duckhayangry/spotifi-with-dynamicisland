@@ -33,7 +33,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out  # thư mục site tĩnh sẽ được tạo nhờ output: 'export'
+          path: .next/output/static
+
 
   deploy:
     runs-on: ubuntu-latest
