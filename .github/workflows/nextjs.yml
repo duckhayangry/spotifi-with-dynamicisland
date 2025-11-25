@@ -1,4 +1,4 @@
-name: Deploy Next.js site to Pages
+name: Deploy Next.js site to GitHub Pages
 
 on:
   push:
@@ -14,27 +14,53 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 1️⃣ Checkout code
       - uses: actions/checkout@v4
 
+      # 2️⃣ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
+      # 3️⃣ Install pnpm globally
       - name: Install pnpm globally
         run: npm install -g pnpm
 
+      # 4️⃣ Detect package manager (optional, supports npm/yarn/pnpm)
+      - name: Detect package manager
+        id: detect-pkg
+        run: |
+          if [ -f "${GITHUB_WORKSPACE}/pnpm-lock.yaml" ]; then
+            echo "manager=pnpm" >> $GITHUB_OUTPUT
+            echo "installCommand=install" >> $GITHUB_OUTPUT
+            echo "runCommand=pnpm exec" >> $GITHUB_OUTPUT
+          elif [ -f "${GITHUB_WORKSPACE}/yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_OUTPUT
+            echo "installCommand=install" >> $GITHUB_OUTPUT
+            echo "runCommand=yarn" >> $GITHUB_OUTPUT
+          elif [ -f "${GITHUB_WORKSPACE}/package-lock.json" ]; then
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "installCommand=ci" >> $GITHUB_OUTPUT
+            echo "runCommand=npx --no-install" >> $GITHUB_OUTPUT
+          else
+            echo "Unable to detect package manager"
+            exit 1
+          fi
+
+      # 5️⃣ Install dependencies
       - name: Install dependencies
-        run: pnpm install
+        run: ${{ steps.detect-pkg.outputs.manager }} ${{ steps.detect-pkg.outputs.installCommand }}
 
+      # 6️⃣ Build Next.js site
       - name: Build Next.js
-        run: pnpm exec next build
+        run: ${{ steps.detect-pkg.outputs.runCommand }} next build
 
+      # 7️⃣ Upload static site artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .next/output/static
-
+          path: .next/output/static  # Next 15+ static export path
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,5 +68,6 @@ jobs:
     environment:
       name: github-pages
     steps:
+      # 1️⃣ Deploy artifact to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
