@@ -30,13 +30,10 @@ jobs:
       - name: Build Next.js
         run: pnpm exec next build
 
-      - name: Export static site
-        run: pnpm exec next export
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: ./out  # thư mục site tĩnh sẽ được tạo nhờ output: 'export'
 
   deploy:
     runs-on: ubuntu-latest
