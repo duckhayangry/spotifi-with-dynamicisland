@@ -100,19 +100,19 @@ const CameraLens = () => (
   </div>
 )
 
-const FaceIDIndicator = () => (
-  <motion.div
-    className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-red-500 shadow-lg shadow-red-500/70"
-    animate={{
-      opacity: [1, 1, 1, 1, 1, 1, 0.3, 0.3, 1],
-    }}
-    transition={{
-      duration: 3,
-      repeat: Number.POSITIVE_INFINITY,
-      ease: "easeInOut",
-    }}
-  />
-)
+// const FaceIDIndicator = () => (
+//   <motion.div
+//     className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-red-500 shadow-lg shadow-red-500/70"
+//     animate={{
+//       opacity: [1, 1, 1, 1, 1, 1, 0.3, 0.3, 1],
+//     }}
+//     transition={{
+//       duration: 3,
+//       repeat: Number.POSITIVE_INFINITY,
+//       ease: "easeInOut",
+//     }}
+//   />
+// )
 
 export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChange }: DynamicIslandProps) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -267,7 +267,6 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
             {notifications.length} New Message{notifications.length > 1 ? "s" : ""}
           </span>
           <div className="ml-2 relative">
-            <FaceIDIndicator />
             <CameraLens />
           </div>
         </div>
@@ -278,7 +277,6 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
       <div className="flex items-center gap-3 w-full">
         <span className="text-transparent text-xs select-none">.</span>
         <div className="ml-auto relative">
-          <FaceIDIndicator />
           <CameraLens />
         </div>
       </div>
