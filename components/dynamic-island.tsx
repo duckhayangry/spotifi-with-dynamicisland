@@ -100,6 +100,20 @@ const CameraLens = () => (
   </div>
 )
 
+const FaceIDIndicator = () => (
+  <motion.div
+    className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-red-500 shadow-lg shadow-red-500/70"
+    animate={{
+      opacity: [1, 1, 1, 1, 1, 1, 0.3, 0.3, 1],
+    }}
+    transition={{
+      duration: 3,
+      repeat: Number.POSITIVE_INFINITY,
+      ease: "easeInOut",
+    }}
+  />
+)
+
 export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChange }: DynamicIslandProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [notifications, setNotifications] = useState<MessengerNotification[]>([])
@@ -203,13 +217,13 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
 
   const handleReactMessage = (id: string) => {
     setNotifications((prev) => prev.filter((msg) => msg.id !== id))
-    window.open("https://m.facebook.com/vanhzxje.2018", "_blank")
+    window.open("https://facebook.com/vanhzxje.2018", "_blank")
     setActiveNotificationId(null)
   }
 
   const handleReplyMessage = (id: string) => {
     setNotifications((prev) => prev.filter((msg) => msg.id !== id))
-    window.open("https://m.facebook.com/vanhzxje.2018", "_blank")
+    window.open("https://facebook.com/vanhzxje.2018", "_blank")
     setActiveNotificationId(null)
   }
 
@@ -252,7 +266,8 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
           <span className="ml-auto text-blue-500 text-xs font-semibold">
             {notifications.length} New Message{notifications.length > 1 ? "s" : ""}
           </span>
-          <div className="ml-2">
+          <div className="ml-2 relative">
+            <FaceIDIndicator />
             <CameraLens />
           </div>
         </div>
@@ -262,7 +277,8 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
     return (
       <div className="flex items-center gap-3 w-full">
         <span className="text-transparent text-xs select-none">.</span>
-        <div className="ml-auto">
+        <div className="ml-auto relative">
+          <FaceIDIndicator />
           <CameraLens />
         </div>
       </div>

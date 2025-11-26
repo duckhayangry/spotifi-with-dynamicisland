@@ -9,6 +9,10 @@ export default function Home() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
+    window.scrollTo(0, 0)
+    document.documentElement.style.overflow = "hidden"
+    document.body.style.overflow = "hidden"
+
     const Config = new AntiDevTool({
       interval: 200,
       redirectURL: "//www.facebook.com/vanhzxje.2018",
@@ -31,6 +35,8 @@ export default function Home() {
       Config.stop()
       document.removeEventListener("keydown", handleKeyDown)
       document.removeEventListener("mousedown", handleMouseDown)
+      document.documentElement.style.overflow = ""
+      document.body.style.overflow = ""
     }
   }, [])
 
