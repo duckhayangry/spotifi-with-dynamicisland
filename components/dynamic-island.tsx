@@ -203,13 +203,13 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
 
   const handleReactMessage = (id: string) => {
     setNotifications((prev) => prev.filter((msg) => msg.id !== id))
-    window.open("https://www.facebook.com/vanhzxje.2018", "_blank")
+    window.open("https://m.facebook.com/vanhzxje.2018", "_blank")
     setActiveNotificationId(null)
   }
 
   const handleReplyMessage = (id: string) => {
     setNotifications((prev) => prev.filter((msg) => msg.id !== id))
-    window.open("https://www.facebook.com/vanhzxje.2018", "_blank")
+    window.open("https://m.facebook.com/vanhzxje.2018", "_blank")
     setActiveNotificationId(null)
   }
 
