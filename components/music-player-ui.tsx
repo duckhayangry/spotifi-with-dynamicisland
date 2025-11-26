@@ -481,11 +481,11 @@ export default function MusicPlayerUI() {
                 </motion.div>
               </div>
               <div className="mt-8 text-center text-[11px] space-y-1 lg:mt-auto animate-gradient bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
-  <p className="tracking-[0.4em] uppercase text-xs">Allright Server</p>
+  <p className="tracking-[0.4em] uppercase text-xs">Aurora Soundspace</p>
 
-  <p>© 2025 Allright Studio. Crafted for immersive listening.</p>
+  <p>© 2025 — Crafted for a refined and immersive audio journey.</p>
 
-  <p>Built with Next.js, Framer Motion, and endless love for music.</p>
+  <p>Powered by Next.js, Framer Motion, and an enduring passion for music.</p>
 
   <p className="pt-2">
     <a 
