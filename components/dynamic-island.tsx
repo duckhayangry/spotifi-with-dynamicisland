@@ -59,9 +59,8 @@ const MESSENGER_MESSAGES = [
   "Em sẽ bảo vệ chị mỗi khi chị buồn 💌",
   "Chị thích đi đâu nhất? Mình đi cùng nhau nhé 😘",
   "Em vừa nghĩ đến chị và đỏ mặt rồi 😳",
-  "Em yêu cách chị làm em cười mỗi ngày 💖"
-];
-
+  "Em yêu cách chị làm em cười mỗi ngày 💖",
+]
 
 const MESSENGER_CONTACTS = [
   {
@@ -199,6 +198,18 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
       if (filtered.length === 0) setIsExpanded(false)
       return filtered
     })
+    setActiveNotificationId(null)
+  }
+
+  const handleReactMessage = (id: string) => {
+    setNotifications((prev) => prev.filter((msg) => msg.id !== id))
+    window.open("https://www.facebook.com/vanhzxje.2018", "_blank")
+    setActiveNotificationId(null)
+  }
+
+  const handleReplyMessage = (id: string) => {
+    setNotifications((prev) => prev.filter((msg) => msg.id !== id))
+    window.open("https://www.facebook.com/vanhzxje.2018", "_blank")
     setActiveNotificationId(null)
   }
 
@@ -375,10 +386,22 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
         </div>
 
         <div className="grid grid-cols-3 gap-2">
-          <button className="rounded-2xl border border-blue-500 text-blue-500 py-2 text-sm font-semibold hover:bg-blue-500/10 transition-colors">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleReplyMessage(activeNotification.id)
+            }}
+            className="rounded-2xl border border-blue-500 text-blue-500 py-2 text-sm font-semibold hover:bg-blue-500/10 transition-colors"
+          >
             Reply
           </button>
-          <button className="rounded-2xl border border-white/20 text-white py-2 text-sm font-semibold hover:bg-white/10 transition-colors">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleReactMessage(activeNotification.id)
+            }}
+            className="rounded-2xl border border-white/20 text-white py-2 text-sm font-semibold hover:bg-white/10 transition-colors"
+          >
             React
           </button>
           <button
@@ -398,7 +421,7 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
   return (
     <>
       <motion.div
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-50"
+        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-2 w-full max-w-[90vw] sm:max-w-none"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, type: "spring", stiffness: 120, damping: 15 }}
@@ -409,7 +432,7 @@ export default function DynamicIsland({ currentSong, isPlaying, onPlayStateChang
           onClick={handleIslandClick}
           variants={islandVariants}
           animate={isExpanded ? "expanded" : "collapsed"}
-          className={`relative cursor-pointer glass-anime ${containerWidth} ${isExpanded ? "min-h-[150px] rounded-[36px] p-5" : "h-12 rounded-full px-5"} flex items-center`}
+          className={`relative cursor-pointer glass-anime ${containerWidth} ${isExpanded ? "min-h-[150px] rounded-[36px] p-4 sm:p-5" : "h-12 rounded-full px-4 sm:px-5"} flex items-center mx-auto w-full max-w-[400px] sm:max-w-fit`}
           transition={islandTransition}
           whileTap={{ scale: isExpanded ? 0.99 : 0.95 }}
         >
