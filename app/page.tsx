@@ -10,8 +10,6 @@ export default function Home() {
     if (typeof window === "undefined") return
 
     window.scrollTo(0, 0)
-    document.documentElement.style.overflow = "hidden"
-    document.body.style.overflow = "hidden"
 
     const Config = new AntiDevTool({
       interval: 200,
