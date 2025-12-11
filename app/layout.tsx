@@ -7,7 +7,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Spotifi~',
   description: 'Created with hazilinz',
-  generator: 'duckhayangry.is-a.dev',
+  generator: 'duckzangry.vercel.app',
 }
 
 export default function RootLayout({

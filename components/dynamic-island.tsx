@@ -66,7 +66,7 @@ const MESSENGER_CONTACTS = [
   {
     name: "Vuong Viet Anh",
     avatar:
-      "https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-1/545977378_1780614972550517_9183803102386982739_n.jpg?stp=dst-jpg_p160x160_tt6&_nc_cat=100&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEr8zt_ngC4RQ2YJrxjHK9_HexG_fSxq3Ad7Eb99LGrcM6ontLHyXgoI-cQ7-Kw-0X42Yw0NKpi_BtRWKV21zZ2&_nc_ohc=jFEk-OkJW0oQ7kNvwF23Wg9&_nc_oc=AdmSC7mzjcfPXCHi6lcaz0JSbbL1zhRZqR0LANIxjvfuFtYxCCxD4yCLZQ-QkAVC0Xk&_nc_zt=24&_nc_ht=scontent.fdad3-4.fna&_nc_gid=FWoaKost4bvK_4k5w2fOVg&oh=00_Afg1S9xT1DM7Xx33p2CqMNtf8jkwwRnC4cXd2gw7NsUEqA&oe=692BA988",
+      "/avatar.jpg",
   },
 ]
 
